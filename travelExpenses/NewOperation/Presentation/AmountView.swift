@@ -11,7 +11,6 @@ class AmountView: UIViewController {
     var hasSetPointOrigin = false
     var pointOrigin: CGPoint?
     
-    
     var isDismissed: (() -> Void)?
     var delegate: UserInputDelegate!
     

@@ -8,7 +8,8 @@
 class DataManager {
     static let shared = DataManager()
     
-    let operationImages = ["dollarsign.circle", "globe", "airplane", "calendar", "rublesign.circle", "doc", "creditcard", "text.justify"]
+    let expensesImages = ["dollarsign.circle", "globe", "airplane", "calendar", "rublesign.circle", "doc", "creditcard", "text.justify"]
+    let incomesImages = ["dollarsign.circle", "globe", "airplane", "calendar"]
     
     let operationNames = ["Ввести сумму", "Выбрать валюту", "Выбрать категорию", "Выбрать дату", "Сумма в рублях", "Добавить фото чека", "Способ оплаты", "Заметки"]
     

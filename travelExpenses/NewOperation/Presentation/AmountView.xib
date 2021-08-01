@@ -20,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xT8-lC-v0K">
-                    <rect key="frame" x="177" y="44" width="60" height="6"/>
+                    <rect key="frame" x="177" y="54" width="60" height="6"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="6" id="Jo1-mX-Om3"/>
@@ -28,7 +28,7 @@
                     </constraints>
                 </view>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JZD-yJ-kA8">
-                    <rect key="frame" x="20" y="84" width="374" height="34"/>
+                    <rect key="frame" x="20" y="94" width="374" height="34"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
@@ -37,7 +37,7 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="JZD-yJ-kA8" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="1SK-2u-2qE"/>
-                <constraint firstItem="xT8-lC-v0K" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="D0k-MI-rhi"/>
+                <constraint firstItem="xT8-lC-v0K" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="D0k-MI-rhi"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="JZD-yJ-kA8" secondAttribute="trailing" constant="20" id="lEG-Sa-KCg"/>
                 <constraint firstItem="JZD-yJ-kA8" firstAttribute="top" secondItem="xT8-lC-v0K" secondAttribute="bottom" constant="34" id="lom-fa-Ang"/>
                 <constraint firstItem="xT8-lC-v0K" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="tCe-52-QtF"/>

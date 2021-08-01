@@ -12,7 +12,10 @@ protocol NewOperationViewModelProtocol {
     var income: Income? { get }
     var expense: Expense? { get }
         
-    var numberOfRows: Int { get }
+    var numberOfRowsExpenses: Int { get }
+    var numberOfRowsIncomes: Int { get }
+    
+    var array: [String] { get set }
     
     init(income: Income)
     init(expense: Expense)
@@ -31,13 +34,23 @@ protocol NewOperationViewModelProtocol {
     func convert(currency: CurrencyName, amount: String) -> [String]
 }
 
+
 class NewOperationViewModel: NewOperationViewModelProtocol {
     
     var trip: Trip?
     var income: Income?
     var expense: Expense?
     
-    var numberOfRows: Int = DataManager.shared.operationImages.count
+    var numberOfRowsExpenses: Int {
+        DataManager.shared.expensesImages.count
+    }
+    
+    var numberOfRowsIncomes: Int {
+        DataManager.shared.incomesImages.count
+    }
+    
+    var array = ["Ввести сумму", "Выбрать валюту", "Выбрать категорию", "Выбрать дату", "Сумма в рублях", "Добавить фото чека", "Способ оплаты", "Заметки"]
+    
     
     required init(trip: Trip) {
         self.trip = trip
@@ -136,3 +149,5 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
         return [convertedTFText, conversionLabelText]
     }
 }
+
+
