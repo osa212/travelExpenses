@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		104FC0507BF95A3F53E19A24 /* Pods_travelExpenses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 445F0AC8993DF30D50AE0A47 /* Pods_travelExpenses.framework */; };
+		8E0789D526B6B9570055AB90 /* DateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E0789D426B6B9570055AB90 /* DateView.xib */; };
+		8E0789D726B6BA480055AB90 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0789D626B6BA480055AB90 /* DateView.swift */; };
 		8E4838EB26B5799400D23196 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4838EA26B5799400D23196 /* Trip.swift */; };
 		8E4838ED26B579AC00D23196 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4838EC26B579AC00D23196 /* Currency.swift */; };
 		8E4838EF26B579C200D23196 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4838EE26B579C200D23196 /* Country.swift */; };
@@ -52,6 +54,8 @@
 
 /* Begin PBXFileReference section */
 		445F0AC8993DF30D50AE0A47 /* Pods_travelExpenses.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_travelExpenses.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E0789D426B6B9570055AB90 /* DateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateView.xib; sourceTree = "<group>"; };
+		8E0789D626B6BA480055AB90 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
 		8E4838D226B578F500D23196 /* travelExpenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = travelExpenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E4838EA26B5799400D23196 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		8E4838EC26B579AC00D23196 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
@@ -215,6 +219,8 @@
 				8E48390926B57B8D00D23196 /* BottomSheetViewController.swift */,
 				8E48390B26B57BA800D23196 /* AmountView.swift */,
 				8E48390D26B57BD000D23196 /* AmountView.xib */,
+				8E0789D626B6BA480055AB90 /* DateView.swift */,
+				8E0789D426B6B9570055AB90 /* DateView.xib */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -392,6 +398,7 @@
 				8E48394426B57FE400D23196 /* Assets.xcassets in Resources */,
 				8E48394726B5801E00D23196 /* LaunchScreen.storyboard in Resources */,
 				8E48390E26B57BD000D23196 /* AmountView.xib in Resources */,
+				8E0789D526B6B9570055AB90 /* DateView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +456,7 @@
 				8E48393226B57D9200D23196 /* extension + imageView.swift in Sources */,
 				8E48391126B57C4700D23196 /* CountriesTableViewController.swift in Sources */,
 				8E48391626B57C8500D23196 /* ReceiptsViewController.swift in Sources */,
+				8E0789D726B6BA480055AB90 /* DateView.swift in Sources */,
 				8E48391B26B57CB200D23196 /* ImageViewController.swift in Sources */,
 				8E4838F426B57A3A00D23196 /* TripsViewModel.swift in Sources */,
 				8E48390A26B57B8D00D23196 /* BottomSheetViewController.swift in Sources */,

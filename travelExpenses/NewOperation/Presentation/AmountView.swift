@@ -21,6 +21,10 @@ class AmountView: UIViewController {
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        textField.resignFirstResponder()
+    }
     override func viewDidLayoutSubviews() {
         if !hasSetPointOrigin {
             hasSetPointOrigin = true
@@ -32,7 +36,7 @@ class AmountView: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction))
         view.addGestureRecognizer(panGesture)
         
-        textField.placeholder = DataManager.shared.operationNames[0]
+        textField.placeholder = DataManager.shared.operationNames[1]
         textField.inputAccessoryView = toolBar()
         textField.resignFirstResponder()
     }
@@ -57,6 +61,7 @@ class AmountView: UIViewController {
     }
 }
 
+    // MARK: -  ToolBar
 extension AmountView {
     func toolBar() -> UIToolbar {
         let toolBar = UIToolbar()

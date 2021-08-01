@@ -23,7 +23,8 @@ protocol NewOperationViewModelProtocol {
     
     func dateFormatToString(dateFormat: String, date: Date) -> String
     func dateFormatToDate(dateFormat: String, dateString: String) -> Date?
-
+    func dateStringToString(date: String) -> String
+    
     func imageViewModel() -> ImageViewModelProtocol?
     func cellViewModel(indexPath: IndexPath) -> NewOperationCellViewModelProtocol?
     func currencyViewModel(date: String) -> CurrencyViewModelProtocol
@@ -49,7 +50,7 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
         DataManager.shared.incomesImages.count
     }
     
-    var array = ["Ввести сумму", "Выбрать валюту", "Выбрать категорию", "Выбрать дату", "Сумма в рублях", "Добавить фото чека", "Способ оплаты", "Заметки"]
+    var array = ["Выбрать дату", "Ввести сумму", "Выбрать валюту", "Выбрать категорию", "Сумма в рублях", "Добавить фото чека", "Способ оплаты", "Заметки"]
     
     
     required init(trip: Trip) {
@@ -75,6 +76,14 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
         dateFormatter.dateFormat = dateFormat
         return dateFormatter.date(from: dateString)
     }
+    func dateStringToString(date: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyy"
+        guard let dateData = dateFormatter.date(from: date) else { return ""}
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        return dateFormatter.string(from: dateData)
+    }
+    
     
     func imageViewModel() -> ImageViewModelProtocol? {
         if let expense = expense {
@@ -143,10 +152,10 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
         let convertedAmount = amount / nominal * value
         let roundedAmount = String(format: "%.2f", convertedAmount)
         
-        let convertedTFText = String(roundedAmount)
+        let convertedText = String(roundedAmount)
         let conversionLabelText = "Курс ЦБ \(value) RUB = \(nominal) \(code)"
         
-        return [convertedTFText, conversionLabelText]
+        return [convertedText, conversionLabelText]
     }
 }
 

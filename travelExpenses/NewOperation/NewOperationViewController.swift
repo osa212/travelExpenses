@@ -9,6 +9,12 @@ import UIKit
 
 protocol UserInputDelegate {
     func getAmount(amount: String)
+    func getDate(date: String)
+}
+
+protocol CurrencyDelegate {
+    func sendCurrency(currency: CurrencyName)
+    func sendStringCurrency(currency: String)
 }
 
 class NewOperationViewController: UITableViewController {
@@ -17,7 +23,10 @@ class NewOperationViewController: UITableViewController {
         
     private let segment = UISegmentedControl(items: ["Расход", "Поступление"])
     
+    var userDate: String?
     var userAmount: String?
+    var userCurrency: String?
+    var convertedAmount: String?
     
     let appColor = UIColor(red: 0/255,
                        green: 140/255,
@@ -137,8 +146,16 @@ class NewOperationViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        segment.selectedSegmentIndex == 0 ? viewModel.numberOfRowsExpenses : viewModel.numberOfRowsIncomes
-        
+        switch segment.selectedSegmentIndex {
+        case 0:
+            
+            return viewModel.numberOfRowsExpenses
+            
+        default:
+            
+            return viewModel.numberOfRowsIncomes
+            
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -152,6 +169,8 @@ class NewOperationViewController: UITableViewController {
 
         cell.cellTextLabel.text = viewModel.array[indexPath.row]
         
+        
+        
         return cell
     }
     
@@ -159,16 +178,61 @@ class NewOperationViewController: UITableViewController {
         
         switch indexPath.row {
         case 0:
+            let dateView = DateView()
+            dateView.modalPresentationStyle = .custom
+            dateView.transitioningDelegate = self
+            
+            self.present(dateView, animated: true, completion: nil)
+            
+            if let date = userDate {
+                dateView.textField.text = date
+            }
+            dateView.delegate = self
+            dateView.isDismissed = { [unowned self] in
+                if let date = userDate {
+                    viewModel.array[0] = date
+                }
+                tableView.reloadData()
+            }
+        case 1:
             let amountView = AmountView()
             amountView.modalPresentationStyle = .custom
             amountView.transitioningDelegate = self
+            
             self.present(amountView, animated: true, completion: nil)
             
+            if let amount = userAmount {
+                amountView.textField.text = amount
+            }
             amountView.delegate = self
             
             amountView.isDismissed = { [unowned self] in
                 if let amount = userAmount {
-                    viewModel.array[0] = amount
+                    viewModel.array[1] = amount
+                }
+                tableView.reloadData()
+            }
+            
+        case 2:
+            let currencyVC = CurrencyTableViewController()
+            
+            guard let date = userDate else { return }
+            let dateToFetch = viewModel.dateStringToString(date: date)
+
+            currencyVC.viewModel = viewModel.currencyViewModel(date: dateToFetch)
+            currencyVC.delegate = self
+            
+            navigationController?.present(UINavigationController(
+                                            rootViewController: currencyVC),
+                                          animated: true,
+                                          completion: nil)
+            
+            currencyVC.isDismissed = { [unowned self] in
+                if let currency = userCurrency {
+                    viewModel.array[2] = currency
+                }
+                if let convertedAmount = convertedAmount {
+                    viewModel.array[4] = convertedAmount
                 }
                 tableView.reloadData()
             }
@@ -181,11 +245,13 @@ class NewOperationViewController: UITableViewController {
         
     }
     
+    
 
     
 
 }
 
+    // MARK: -  PresentationController
 extension NewOperationViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         BottomSheetViewController(presentedViewController: presented,
@@ -194,11 +260,37 @@ extension NewOperationViewController: UIViewControllerTransitioningDelegate {
 }
 
     
+    // MARK: -  UserInputDelegate
 extension NewOperationViewController: UserInputDelegate {
+    func getDate(date: String) {
+        userDate = date
+    }
+    
     func getAmount(amount: String) {
         userAmount = amount
     }
     
-    
 }
 
+extension NewOperationViewController: CurrencyDelegate {
+    func sendStringCurrency(currency: String) {
+        userCurrency = currency
+    }
+    
+    
+    func sendCurrency(currency: CurrencyName) {
+        userCurrency = currency.CharCode
+        guard let userAmount = userAmount else { return }
+
+        if segment.selectedSegmentIndex == 0 && currency.CharCode != "RUB" {
+            convertedAmount = viewModel.convert(currency: currency, amount: userAmount)[0]
+        } else if segment.selectedSegmentIndex == 0 {
+            convertedAmount = userAmount
+        }
+    }
+}
+
+    // MARK: -  DatePicker
+extension NewOperationViewController {
+    
+}

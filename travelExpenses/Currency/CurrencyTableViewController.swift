@@ -13,7 +13,9 @@ class CurrencyTableViewController: UITableViewController {
     
     var viewModel: CurrencyViewModelProtocol!
     
-    //var delegate: CurrencyDelegate!
+    var delegate: CurrencyDelegate!
+    
+    var isDismissed: (() -> Void)?
     
     private var searchBarIsEmpty: Bool {
         guard let text = searchController.searchBar.text else { return false }
@@ -40,6 +42,7 @@ class CurrencyTableViewController: UITableViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
+
         navigationItem.searchController = searchController
         definesPresentationContext = true
     }
@@ -89,14 +92,19 @@ class CurrencyTableViewController: UITableViewController {
 
         if !viewModel.currencies.isEmpty {
             let choosenCurrency = isFiltering == true ? viewModel.filteredCUR.value[indexPath.row] : viewModel.currencies[indexPath.row]
-            //delegate.sendCurrency(currency: choosenCurrency)
+            delegate.sendCurrency(currency: choosenCurrency)
+            print(choosenCurrency)
         } else {
             let choosenCurrency = isFiltering == true ? viewModel.filteredString.value[indexPath.row] : viewModel.currencyNames[indexPath.row]
             
-           // delegate.sendStringCurrency(currency: choosenCurrency)
+             delegate.sendStringCurrency(currency: choosenCurrency)
+            print(choosenCurrency, "string")
         }
         searchController.isActive = false
-        dismiss(animated: true, completion: nil)
+        
+        dismiss(animated: true) { [weak self] in
+            self?.isDismissed?()
+        }
     }
 }
 
