@@ -56,7 +56,7 @@ class OperationsViewController: UITableViewController {
         tableView.contentInset.top = 60
         
         view.backgroundColor = .white
-        
+        navigationController?.isToolbarHidden = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action,
                                                             target: self,
                                                             action: #selector(exportCSV))
@@ -200,18 +200,6 @@ class OperationsViewController: UITableViewController {
 
     // MARK: -  Edit Income
     private func editIncome(indexPath: IndexPath) {
-//        let newTransactionVC = NewTransactionViewController()
-//        newTransactionVC.viewModel = viewModel.NewTransactionViewModelIncome(indexPath: indexPath)
-//
-//        let navigationController = UINavigationController(
-//                                        rootViewController: newTransactionVC)
-//        navigationController.modalPresentationStyle = .fullScreen
-//        present(navigationController, animated: true, completion: nil)
-//
-//        newTransactionVC.isDismissed = { [weak self] in
-//            self?.tableView.reloadData()
-//            self?.getBalance()
-//        }
         
         let newOperationVC = NewOperationViewController()
         navigationController?.pushViewController(newOperationVC, animated: true)

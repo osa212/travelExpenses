@@ -27,6 +27,7 @@ protocol NewOperationViewModelProtocol {
     
     func imageViewModel() -> ImageViewModelProtocol?
     func cellViewModel(indexPath: IndexPath) -> NewOperationCellViewModelProtocol?
+    func receiptCellViewModel() -> ReceiptsViewCellModelProtocol?
     func currencyViewModel(date: String) -> CurrencyViewModelProtocol
     
     func saveExpense(amount: String, currency: String, category: String, date: String, convertedAmount: String, receipt: String, method: String, note: String)
@@ -95,6 +96,13 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
         return NewOperationCellViewModel(indexPath: indexPath)
     }
     
+    func receiptCellViewModel() -> ReceiptsViewCellModelProtocol? {
+        if let expense = expense {
+            return ReceiptsViewCellModel(expense: expense)
+        }
+        return nil
+    }
+    
     func currencyViewModel(date: String) -> CurrencyViewModelProtocol {
         return CurrencyViewModel(choosenDate: date)
     }
@@ -103,7 +111,7 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
         guard let amountDouble = Double(amount) else { return }
 
         guard let dateFormat = dateFormatToDate(
-                dateFormat: "yyyy/MM/dd",
+                dateFormat: "dd/MM/yyyy",
                 dateString: date) else { return }
         guard let convertedDouble = Double(convertedAmount) else { return }
 
@@ -128,7 +136,7 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
     func saveIncome(amount: String, currency: String, category: String, date: String) {
         guard let amountDouble = Double(amount) else { return }
         
-        guard let dateFormat = dateFormatToDate(dateFormat: "yyyy/MM/dd", dateString: date) else { return}
+        guard let dateFormat = dateFormatToDate(dateFormat: "dd/MM/yyyy", dateString: date) else { return}
         
         if let income = income {
             StorageManager.shared.editIncome(income: income,

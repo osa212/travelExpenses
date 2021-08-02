@@ -22,6 +22,10 @@ class DateView: UIViewController {
         setDatePicker()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        textField.becomeFirstResponder()
+    }
+    
     override func viewDidLayoutSubviews() {
         if !hasSetPointOrigin {
             hasSetPointOrigin = true

@@ -1,28 +1,28 @@
 //
-//  AmountView.swift
-//  report
+//  ConvertedAmountView.swift
+//  travelExpenses
 //
-//  Created by osa on 29.07.2021.
+//  Created by osa on 02.08.2021.
 //
 
 import UIKit
 
-class AmountView: UIViewController {
+class ConvertedAmountView: UIViewController {
     var hasSetPointOrigin = false
     var pointOrigin: CGPoint?
     
     var isDismissed: (() -> Void)?
     var delegate: UserInputDelegate!
-    
-    @IBOutlet weak var textField: UITextField!
-    
+
+    @IBOutlet weak var amountTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        textField.becomeFirstResponder()
+        amountTextField.becomeFirstResponder()
+
     }
     
     
@@ -37,9 +37,9 @@ class AmountView: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction))
         view.addGestureRecognizer(panGesture)
         
-        textField.placeholder = DataManager.shared.operationNames[1]
-        textField.inputAccessoryView = toolBar()
-        textField.resignFirstResponder()
+        amountTextField.placeholder = DataManager.shared.operationNames[4]
+        amountTextField.inputAccessoryView = toolBar()
+        amountTextField.resignFirstResponder()
     }
     
     @objc func panAction(sender: UIPanGestureRecognizer) {
@@ -63,7 +63,7 @@ class AmountView: UIViewController {
 }
 
     // MARK: -  ToolBar
-extension AmountView {
+extension ConvertedAmountView {
     func toolBar() -> UIToolbar {
         let toolBar = UIToolbar()
         toolBar.barStyle = .default
@@ -95,8 +95,8 @@ extension AmountView {
     }
     
     @objc func tapDoneButton() {
-        if let amount = textField.text {
-            delegate.getAmount(amount: amount)
+        if let amount = amountTextField.text {
+            delegate.getConvertedAmount(amount: amount)
         }
         
         self.dismiss(animated: true) { [weak self] in
@@ -108,3 +108,4 @@ extension AmountView {
         self.dismiss(animated: true, completion: nil)
     }
 }
+
