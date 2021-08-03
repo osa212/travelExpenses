@@ -14,6 +14,7 @@ class ImageViewController: UIViewController {
     
     var imageScrollView: ImageScrollView!
     let shareButton = UIButton()
+    let cancelButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,18 +34,39 @@ class ImageViewController: UIViewController {
         self.present(activityVC, animated: true, completion: nil)
     }
     
+    @objc func cancelTapped() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     private func setButton() {
         view.addSubview(shareButton)
+        view.addSubview(cancelButton)
 
-        shareButton.setTitle("Отправить", for: .normal)
-        shareButton.backgroundColor = .blue
-        shareButton.layer.cornerRadius = 10
+        shareButton.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
+        shareButton.setImage(UIImage(
+                                systemName: "square.and.arrow.up"),
+                             for: .normal)
         shareButton.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
+        shareButton.imageEdgeInsets = UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
         shareButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.snp.bottom).inset(20)
-            make.right.equalTo(view.snp.right).inset(16)
-            make.width.equalTo(100)
+            make.top.equalTo(view.snp.top).inset(30)
+            make.right.equalTo(view.snp.right).inset(30)
         }
+        shareButton.contentVerticalAlignment = .fill
+        shareButton.imageView?.contentMode = .scaleAspectFit
+        
+        cancelButton.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
+        cancelButton.setImage(UIImage(
+                                systemName: "multiply"),
+                             for: .normal)
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        cancelButton.imageEdgeInsets = UIEdgeInsets(top: 25, left: 25, bottom: 25, right: 25)
+        cancelButton.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top).inset(30)
+            make.left.equalTo(view.snp.left).inset(30)
+        }
+        cancelButton.contentVerticalAlignment = .fill
+        cancelButton.imageView?.contentMode = .scaleAspectFit
     }
     private func setScrollView() {
         imageScrollView = ImageScrollView(frame: view.bounds)

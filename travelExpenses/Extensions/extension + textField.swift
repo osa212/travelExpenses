@@ -53,5 +53,11 @@ extension UITextField {
         
     }
     
-    
+    func addBottomLine() {
+        let bottomLine = CALayer()
+        bottomLine.frame = CGRect(x: 0.0, y: self.frame.height - 1, width: self.frame.width - 20, height: 1.0)
+        bottomLine.backgroundColor = UIColor.darkGray.cgColor
+        self.borderStyle = UITextField.BorderStyle.none
+        self.layer.addSublayer(bottomLine)
+    }
 }

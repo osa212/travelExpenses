@@ -47,6 +47,7 @@ class DateView: UIViewController {
         
         textField.placeholder = DataManager.shared.operationNames[0]
         textField.resignFirstResponder()
+        textField.addBottomLine()
     }
     
     @objc func panAction(sender: UIPanGestureRecognizer) {

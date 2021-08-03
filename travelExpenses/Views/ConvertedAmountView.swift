@@ -40,6 +40,7 @@ class ConvertedAmountView: UIViewController {
         amountTextField.placeholder = DataManager.shared.operationNames[4]
         amountTextField.inputAccessoryView = toolBar()
         amountTextField.resignFirstResponder()
+        amountTextField.addBottomLine()
     }
     
     @objc func panAction(sender: UIPanGestureRecognizer) {

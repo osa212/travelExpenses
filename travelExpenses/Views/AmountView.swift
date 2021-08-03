@@ -40,6 +40,8 @@ class AmountView: UIViewController {
         textField.placeholder = DataManager.shared.operationNames[1]
         textField.inputAccessoryView = toolBar()
         textField.resignFirstResponder()
+        
+        textField.addBottomLine()
     }
     
     @objc func panAction(sender: UIPanGestureRecognizer) {
