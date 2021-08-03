@@ -126,11 +126,34 @@ class NewOperationViewController: UITableViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    
+    
     // MARK: -  Save Operation
     @objc func saveOperation() {
+        if viewModel.array[0].isEmpty || viewModel.array[0] == DataManager.shared.operationNames[0] {
+            alert(title: "❌", message: "Пожалуйста, выберите дату")
+            return
+        }
+        if viewModel.array[1].isEmpty || viewModel.array[1] == DataManager.shared.operationNames[1] {
+            alert(title: "❌", message: "Пожалуйста, введите сумму")
+            return
+        }
+        if viewModel.array[2].isEmpty || viewModel.array[2] == DataManager.shared.operationNames[2] {
+            alert(title: "❌", message: "Пожалуйста, выберите валюту")
+            return
+        }
+        if viewModel.array[3].isEmpty || viewModel.array[3] == DataManager.shared.operationNames[3] {
+            alert(title: "❌", message: "Пожалуйста, выберите категорию")
+            return
+        }
         
         switch title {
         case "Расход":
+            
+            if viewModel.array[4].isEmpty || viewModel.array[4] == DataManager.shared.operationNames[4] {
+                alert(title: "❌", message: "Пожалуйста, введите сумму в рублях")
+                return
+            }
             if let image = imageView.image {
                 fileName = savePng(image: image)
                 guard let fileName = fileName else { return }
@@ -146,6 +169,7 @@ class NewOperationViewController: UITableViewController {
                                   method: viewModel.array[6],
                                   note: "")
         default:
+            
             viewModel.saveIncome(amount: viewModel.array[1],
                                  currency: viewModel.array[2],
                                  category: viewModel.array[3],
@@ -284,7 +308,11 @@ class NewOperationViewController: UITableViewController {
         case 2:
             let currencyVC = CurrencyTableViewController()
             
-            guard let date = userDate else { return }
+            guard let date = userDate else {
+                alert(title: "❌", message: "Необходимо ввести дату расхода")
+                tableView.deselectRow(at: indexPath, animated: true)
+                return
+            }
             let dateToFetch = viewModel.dateStringToString(date: date)
 
             currencyVC.viewModel = viewModel.currencyViewModel(date: dateToFetch)
@@ -302,10 +330,14 @@ class NewOperationViewController: UITableViewController {
                 currencyVC.isDismissed = { [unowned self] in
                     if let currency = userCurrency {
                         viewModel.array[2] = currency
+                        if userCurrency == "RUB" {
+                            viewModel.array[4] = viewModel.array[1]
+                        }
                     }
                     if let convertedAmount = convertedAmount {
                         viewModel.array[4] = convertedAmount
                     }
+            
                     tableView.reloadData()
                 }
                 
@@ -344,18 +376,19 @@ class NewOperationViewController: UITableViewController {
             
         case 5:
             attachTapped()
-        case 6:
+        default:
             let methodView = PaymentMethodViewController()
+            methodView.modalPresentationStyle = .custom
+            methodView.transitioningDelegate = self
             methodView.delegate = self
             self.present(methodView, animated: true, completion: nil)
             methodView.isDismissed = { [unowned self] in
-                if let method = paymentMethod {
+            if let method = paymentMethod {
                     viewModel.array[6] = method
                 }
                 tableView.reloadData()
             }
-        default:
-            break
+            
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -529,4 +562,20 @@ extension NewOperationViewController: UIImagePickerControllerDelegate, UINavigat
         }
         return nil
     }
+}
+
+extension NewOperationViewController {
+    private func alert(title: String, message: String) {
+            let alert = UIAlertController(
+                title: title,
+                message: message,
+                preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(
+                title: "OK",
+                style: .default,
+                handler: nil)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        }
 }

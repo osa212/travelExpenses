@@ -18,6 +18,7 @@ class CategoryTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         viewModel = CategoryViewModel()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -42,6 +43,8 @@ class CategoryTableViewController: UITableViewController {
         
         content.text = viewModel.categories[indexPath.row]
 
+        let imageNames = DataManager.shared.categoriesImages
+        content.image = UIImage(systemName: imageNames[indexPath.row])
         cell.contentConfiguration = content
         return cell
     }

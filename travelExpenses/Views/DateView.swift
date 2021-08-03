@@ -33,6 +33,14 @@ class DateView: UIViewController {
         }
     }
     
+    @IBAction func buttonTapped(_ sender: Any) {
+        guard let date = textField.text else { return }
+        delegate.getDate(date: date)
+        
+        self.dismiss(animated: true) { [weak self] in
+            self?.isDismissed?()
+        }
+    }
     private func setupUI() {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction))
         view.addGestureRecognizer(panGesture)
@@ -83,12 +91,7 @@ extension DateView {
         
             textField.resignFirstResponder()
             
-            guard let date = textField.text else { return }
-            delegate.getDate(date: date)
             
-            self.dismiss(animated: true) { [weak self] in
-                self?.isDismissed?()
-            }
         }
     }
     

@@ -51,7 +51,7 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
         DataManager.shared.incomesImages.count
     }
     
-    var array = ["Выбрать дату", "Ввести сумму", "Выбрать валюту", "Выбрать категорию", "Сумма в рублях", "Добавить фото чека", "Способ оплаты", "Заметки"]
+    var array = ["Выбрать дату", "Ввести сумму", "Выбрать валюту", "Выбрать категорию", "Сумма в рублях", "Добавить фото чека", "Способ оплаты"]
     
     
     required init(trip: Trip) {

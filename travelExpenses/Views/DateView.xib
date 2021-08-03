@@ -28,18 +28,41 @@
                     </constraints>
                 </view>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qBF-Vc-UIC">
-                    <rect key="frame" x="20" y="94" width="374" height="34"/>
+                    <rect key="frame" x="20" y="80" width="374" height="34"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1bV-1G-L4z">
+                    <rect key="frame" x="147" y="134" width="120" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.5490196078431373" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="XXP-lD-Dv7"/>
+                        <constraint firstAttribute="width" constant="120" id="jAY-6p-Sf7"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
+                    <state key="normal" title="Готово">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="15"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="buttonTapped:" destination="-1" eventType="touchUpInside" id="FmS-Kh-Z1W"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="ZOi-yl-or0" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3VZ-G9-8S2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qBF-Vc-UIC" secondAttribute="trailing" constant="20" id="Egm-l0-5Ck"/>
-                <constraint firstItem="qBF-Vc-UIC" firstAttribute="top" secondItem="ZOi-yl-or0" secondAttribute="bottom" constant="34" id="OHr-cr-oId"/>
+                <constraint firstItem="qBF-Vc-UIC" firstAttribute="top" secondItem="ZOi-yl-or0" secondAttribute="bottom" constant="20" id="OHr-cr-oId"/>
+                <constraint firstItem="1bV-1G-L4z" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Vm7-Hu-bL6"/>
                 <constraint firstItem="qBF-Vc-UIC" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="cNe-HJ-7y7"/>
+                <constraint firstItem="1bV-1G-L4z" firstAttribute="top" secondItem="qBF-Vc-UIC" secondAttribute="bottom" constant="20" id="l4m-LI-Bka"/>
                 <constraint firstItem="ZOi-yl-or0" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="pLw-XG-Fs1"/>
             </constraints>
             <point key="canvasLocation" x="139" y="100"/>
