@@ -250,14 +250,14 @@ class NewOperationViewController: UITableViewController {
         
         saveButton.snp.makeConstraints { make in
             make.top.equalTo(buttonsView.snp.top).offset(20)
-            make.right.equalTo(buttonsView.snp.right).offset(-20)
-            make.width.equalTo(140)
+            make.left.equalTo(buttonsView.snp.centerX).offset(15)
+            make.width.equalTo(130)
         }
         
         cancelButton.snp.makeConstraints { make in
             make.top.equalTo(buttonsView.snp.top).offset(20)
-            make.left.equalTo(buttonsView.snp.left).offset(20)
-            make.width.equalTo(140)
+            make.right.equalTo(buttonsView.snp.centerX).offset(-15)
+            make.width.equalTo(130)
         }
         
         return buttonsView

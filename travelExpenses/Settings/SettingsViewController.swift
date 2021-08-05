@@ -45,13 +45,19 @@ class SettingsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
         if indexPath.row == 0 {
             let sortedVC = SortedViewController()
             self.navigationController?.pushViewController(sortedVC, animated: true)
         }
         
+        if indexPath.row == 1 {
+            let descriptionVC = DescriptionViewController()
+            self.navigationController?.pushViewController(descriptionVC, animated: true)
+        }
+        
         if indexPath.row == 2 {
-            guard let url = URL(string: "https://t.me/\("sargy_os")") else { return }
+            guard let url = URL(string: "https://t.me/\("travel_exp")") else { return }
             UIApplication.shared.open(url)
         }
     }

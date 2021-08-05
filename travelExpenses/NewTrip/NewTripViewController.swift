@@ -58,7 +58,7 @@ class NewTripViewController: UIViewController {
         
         navBarAppearance.backgroundColor = appColor
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-        title = "Добавить командировку"
+        title = "Добавить"
         
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -79,7 +79,8 @@ class NewTripViewController: UIViewController {
         cityTF.placeholder = "Город"
         cityTF._placeholder = "Город"
         
-        
+        let screenWidth = UIScreen.main.bounds.width
+        print(screenWidth)
         countryTF.snp.makeConstraints { maker in
             maker.top.equalTo(100)
             maker.left.equalTo(40)
