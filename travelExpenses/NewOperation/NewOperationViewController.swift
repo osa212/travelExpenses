@@ -28,9 +28,7 @@ protocol CategoryDelegate {
 class NewOperationViewController: UITableViewController {
 
     var viewModel: NewOperationViewModelProtocol!
-        
-    private let segment = UISegmentedControl(items: ["Расход", "Поступление"])
-    
+  
     var userDate: String?
     var userAmount: String?
     var userCurrency: String?
@@ -45,6 +43,8 @@ class NewOperationViewController: UITableViewController {
                        alpha: 1)
     let imageView = UIImageView()
     
+    private let segment = UISegmentedControl(items: ["Расход", "Поступление"])
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,7 +52,6 @@ class NewOperationViewController: UITableViewController {
         self.tableView.backgroundColor = .gray
         
         initialize()
-        setupTabBar()
         initializeEditing()
     }
     
@@ -62,7 +61,6 @@ class NewOperationViewController: UITableViewController {
         tableView.contentInset.top = 45
         title = "Расход"
         let width = UIScreen.main.bounds.size.width
-        
         view.backgroundColor = .white
         view.addSubview(segment)
         segment.selectedSegmentIndex = 0
@@ -83,53 +81,15 @@ class NewOperationViewController: UITableViewController {
                           for: .valueChanged)
     }
     
-    private func setupTabBar() {
-        navigationController?.isToolbarHidden = false
-        let toolBar = UIToolbar()
-        toolBar.tintColor = .black
-        
-        let saveButton = UIButton(type: .custom)
-        let cancelButton = UIButton(type: .custom)
-        cancelButton.setTitle("Отмена", for: .normal)
-        cancelButton.backgroundColor = .gray
-        cancelButton.layer.cornerRadius = 15
-        cancelButton.addTarget(self, action: #selector(cancelTapped), for: UIControl.Event.touchUpInside)
-        let barCancelButton = UIBarButtonItem(customView: cancelButton)
-        
-        let widthCancel = barCancelButton.customView?.widthAnchor.constraint(equalToConstant: 150)
-        widthCancel?.isActive = true
-        let heightCancel = barCancelButton.customView?.heightAnchor.constraint(equalToConstant: 35)
-        heightCancel?.isActive = true
-        
-        saveButton.setTitle("Сохранить", for: .normal)
-        saveButton.backgroundColor = appColor
-        saveButton.layer.cornerRadius = 15
-        saveButton.addTarget(self, action: #selector(saveOperation), for: UIControl.Event.touchUpInside)
-        let barSaveButton = UIBarButtonItem(customView: saveButton)
-        
-        let widthSave = barSaveButton.customView?.widthAnchor.constraint(equalToConstant: 150)
-        widthSave?.isActive = true
-        let heightSave = barSaveButton.customView?.heightAnchor.constraint(equalToConstant: 35)
-        heightSave?.isActive = true
-        
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                            target: nil,
-                                            action: nil)
-        
-        setToolbarItems([barCancelButton, flexibleSpace, barSaveButton],
-                        animated: true)
-        
-        view.addSubview(toolBar)
-    }
     
-    @objc func cancelTapped() {
+    @objc private func cancelTapped() {
         self.navigationController?.popViewController(animated: true)
     }
     
     
     
     // MARK: -  Save Operation
-    @objc func saveOperation() {
+    @objc private func saveOperation() {
         if viewModel.array[0].isEmpty || viewModel.array[0] == DataManager.shared.operationNames[0] {
             alert(title: "❌", message: "Пожалуйста, выберите дату")
             return
@@ -180,7 +140,7 @@ class NewOperationViewController: UITableViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc func segmentTapped(_ segmentedControl: UISegmentedControl) {
+    @objc private func segmentTapped(_ segmentedControl: UISegmentedControl) {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             title = "Расход"
@@ -264,6 +224,43 @@ class NewOperationViewController: UITableViewController {
         }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 60
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let buttonsView = UIView()
+        
+        let saveButton = UIButton(type: .custom)
+        let cancelButton = UIButton(type: .custom)
+        buttonsView.addSubview(saveButton)
+        buttonsView.addSubview(cancelButton)
+        cancelButton.setTitle("Отмена", for: .normal)
+        cancelButton.backgroundColor = .gray
+        cancelButton.layer.cornerRadius = 15
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: UIControl.Event.touchUpInside)
+        
+                
+        saveButton.setTitle("Сохранить", for: .normal)
+        saveButton.backgroundColor = appColor
+        saveButton.layer.cornerRadius = 15
+        saveButton.addTarget(self, action: #selector(saveOperation), for: UIControl.Event.touchUpInside)
+        
+        saveButton.snp.makeConstraints { make in
+            make.top.equalTo(buttonsView.snp.top).offset(20)
+            make.right.equalTo(buttonsView.snp.right).offset(-20)
+            make.width.equalTo(140)
+        }
+        
+        cancelButton.snp.makeConstraints { make in
+            make.top.equalTo(buttonsView.snp.top).offset(20)
+            make.left.equalTo(buttonsView.snp.left).offset(20)
+            make.width.equalTo(140)
+        }
+        
+        return buttonsView
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -508,7 +505,7 @@ extension NewOperationViewController: UIImagePickerControllerDelegate, UINavigat
             actionAlert.addAction(deleteAction)
         }
         
-        if viewModel.expense != nil  {
+        if viewModel.expense != nil && imageView.image != nil {
             let showAction = UIAlertAction(
                 title: "Открыть фото",
                 style: .default) { [unowned self] action in

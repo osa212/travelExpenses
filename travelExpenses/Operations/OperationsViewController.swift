@@ -37,7 +37,7 @@ class OperationsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         initialize()
-        tableView.reloadData()
+        self.tableView.reloadData()
         getBalance()
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -151,17 +151,7 @@ class OperationsViewController: UITableViewController {
 
     // MARK: -  Button "Add"
     @objc private func addButton() {
-//        let newTransactionVC = NewTransactionViewController()
-//        let navigationController = UINavigationController(
-//                                        rootViewController: newTransactionVC)
-//        navigationController.modalPresentationStyle = .fullScreen
-//        present(navigationController, animated: true, completion: nil)
-//
-//        newTransactionVC.viewModel = viewModel.NewTransactionViewModelNew(trip: viewModel.trip)
-//        newTransactionVC.isDismissed = { [weak self] in
-//            self?.tableView.reloadData()
-//            self?.getBalance()
-//        }
+
         let newOperationVC = NewOperationViewController()
         navigationController?.pushViewController(newOperationVC, animated: true)
         newOperationVC.viewModel = viewModel.NewOperationViewModelNew(trip: viewModel.trip)
@@ -208,18 +198,7 @@ class OperationsViewController: UITableViewController {
     }
     // MARK: -  Edit Expense
     private func editExpense(indexPath: IndexPath) {
-//        let newTransactionVC = NewTransactionViewController()
-//        newTransactionVC.viewModel = viewModel.NewTransactionViewModelExpense(indexPath: indexPath)
-//
-//        let navigationController = UINavigationController(
-//                                        rootViewController: newTransactionVC)
-//        navigationController.modalPresentationStyle = .fullScreen
-//        present(navigationController, animated: true, completion: nil)
-//
-//        newTransactionVC.isDismissed = { [weak self] in
-//            self?.tableView.reloadData()
-//            self?.getBalance()
-//        }
+
         let newOperationVC = NewOperationViewController()
         navigationController?.pushViewController(newOperationVC, animated: true)
         

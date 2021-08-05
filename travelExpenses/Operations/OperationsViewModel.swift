@@ -24,11 +24,7 @@ protocol OperationsViewModelProtocol {
     
     func deleteTransaction(indexPath: IndexPath, segmentIndex: Int)
     
-//    func NewTransactionViewModelIncome(indexPath: IndexPath) -> NewTransactionViewModelProtocol
-//    func NewTransactionViewModelExpense(indexPath: IndexPath) -> NewTransactionViewModelProtocol
-//    func NewTransactionViewModelNew(trip: Trip) -> NewTransactionViewModelProtocol
-    
-    //new
+
     func NewOperationViewModelIncome(indexPath: IndexPath) -> NewOperationViewModelProtocol
     func NewOperationViewModelExpense(indexPath: IndexPath) -> NewOperationViewModelProtocol
     func NewOperationViewModelNew(trip: Trip) -> NewOperationViewModelProtocol
@@ -43,14 +39,18 @@ protocol OperationsViewModelProtocol {
 }
 
 class OperationsViewModel: OperationsViewModelProtocol {
+    let sort = UserDefaultsManager.shared.fetchSort()
+    
     var trip: Trip
     
     var expenses: Results<Expense> {
-        trip.expenses.sorted(byKeyPath: "date")
+        trip.expenses.sorted(byKeyPath: sort.sortExpenseBy,
+                             ascending: sort.sortDirection)
     }
     
     var incomes: Results<Income> {
-        trip.incomes.sorted(byKeyPath: "date")
+        trip.incomes.sorted(byKeyPath: sort.sortIncomeBy,
+                            ascending: sort.sortDirection)
     }
     required init(trip: Trip) {
         self.trip = trip
@@ -95,19 +95,7 @@ class OperationsViewModel: OperationsViewModelProtocol {
         }
     }
     
-//    func NewTransactionViewModelIncome(indexPath: IndexPath) -> NewTransactionViewModelProtocol {
-//        return NewTransactionViewModel(income: incomes[indexPath.row])
-//    }
-//
-//    func NewTransactionViewModelExpense(indexPath: IndexPath) -> NewTransactionViewModelProtocol {
-//        return NewTransactionViewModel(expense: expenses[indexPath.row])
-//    }
-//
-//    func NewTransactionViewModelNew(trip: Trip) -> NewTransactionViewModelProtocol {
-//        return NewTransactionViewModel(trip: trip)
-//    }
-    
-    //new
+
     func NewOperationViewModelNew(trip: Trip) -> NewOperationViewModelProtocol {
         return NewOperationViewModel(trip: trip)
     }
@@ -149,8 +137,17 @@ class OperationsViewModel: OperationsViewModelProtocol {
             let date = dateFormatToString(dateFormat: "dd/MM/yyyy", date: expense.date)
             csvHead.append("\(number),\(date),\(expense.category), ,-\(expense.convertedAmount)\n")
         }
-        csvHead.append(" , , , \(incomeLabelText), \(expenseLabelText)\n")
-        csvHead.append(" , , , Balance, \(balanceLabelText)\n")
+        
+        let incomeAmounts: [Double] = incomes.map { return $0.amount }
+        let sumIncomes = String(incomeAmounts.reduce(0, +))
+        
+        let expenseAmounts: [Double] = expenses.map { return $0.convertedAmount }
+        let sumExpenses = String(expenseAmounts.reduce(0, +))
+        let balance = String(incomeAmounts.reduce(0, +) - expenseAmounts.reduce(0, +))
+        
+        csvHead.append(" , , , \(sumIncomes), \(sumExpenses)\n")
+        csvHead.append(" , , , Balance, \(balance)\n")
+        
         
         do {
             try csvHead.write(to: path!, atomically: true, encoding: .utf8)

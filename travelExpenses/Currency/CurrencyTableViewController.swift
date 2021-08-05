@@ -74,11 +74,17 @@ class CurrencyTableViewController: UITableViewController {
             
         } else if !viewModel.currencies.isEmpty {
             content.text = viewModel.currencies[indexPath.row].CharCode
-            content.secondaryText = viewModel.currencies[indexPath.row].Name
+            
+            if let value = viewModel.currencies[indexPath.row].Value, let name =  viewModel.currencies[indexPath.row].Name {
+                content.secondaryText = "\(name)\nКурс ЦБ РФ \(value)"
+            }
             
             if isFiltering == true {
                 content.text = viewModel.filteredCUR.value[indexPath.row].CharCode
-                content.secondaryText = viewModel.filteredCUR.value[indexPath.row].Name
+                
+                if let value = viewModel.filteredCUR.value[indexPath.row].Value, let name = viewModel.filteredCUR.value[indexPath.row].Name {
+                    content.secondaryText = "\(name)\nКурс ЦБ РФ \(value)"
+                }
             }
             
         }

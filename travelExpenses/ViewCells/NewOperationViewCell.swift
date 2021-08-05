@@ -34,7 +34,7 @@ class NewOperationViewCell: UITableViewCell {
                                           blue: 255/255,
                                           alpha: 1)
 
-            cellTextLabel.textColor = .gray
+            cellTextLabel.textColor = .darkGray
 
         }
     }

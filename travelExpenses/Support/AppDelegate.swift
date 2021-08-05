@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         tabBarController.viewControllers = [
             UINavigationController(rootViewController: TripsViewController()),
-            UINavigationController(rootViewController: ReceiptsViewController())
+            UINavigationController(rootViewController: SettingsViewController())
         ]
                 
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -40,8 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tag: 1)
         
         let secondItem = UITabBarItem(
-            title: "Чеки",
-            image: UIImage(systemName: "doc")?.withRenderingMode(.alwaysOriginal),
+            title: "Настройки",
+            image: UIImage(systemName: "gearshape")?.withRenderingMode(.alwaysOriginal),
             tag: 2)
         
         let items = [homeItem, secondItem]

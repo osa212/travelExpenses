@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SortedViewController" customModule="travelExpenses" customModuleProvider="target">
+            <connections>
+                <outlet property="firstSegment" destination="Com-rO-I1l" id="SFT-Lc-b58"/>
+                <outlet property="secondSegment" destination="PeH-ru-Apf" id="dnS-Md-F0S"/>
+                <outlet property="view" destination="iN0-l3-epB" id="fVV-Kg-VSO"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uTN-xW-ydQ">
+                    <rect key="frame" x="20" y="104" width="374" height="150"/>
+                    <subviews>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Com-rO-I1l">
+                            <rect key="frame" x="52" y="23" width="270" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="0pR-m8-Bqi"/>
+                                <constraint firstAttribute="height" constant="35" id="Gqh-5k-ahO"/>
+                                <constraint firstAttribute="width" constant="270" id="LqA-PY-son"/>
+                            </constraints>
+                            <segments>
+                                <segment title="По дате"/>
+                                <segment title="По сумме"/>
+                            </segments>
+                            <connections>
+                                <action selector="firstSegment:" destination="-1" eventType="valueChanged" id="2OZ-vX-Ebt"/>
+                            </connections>
+                        </segmentedControl>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PeH-ru-Apf">
+                            <rect key="frame" x="52" y="88" width="270" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="270" id="Td0-Qu-HVP"/>
+                                <constraint firstAttribute="height" constant="35" id="gqq-Rd-Mqn"/>
+                            </constraints>
+                            <segments>
+                                <segment title="По возрастанию"/>
+                                <segment title="По убыванию"/>
+                            </segments>
+                            <connections>
+                                <action selector="secondSegment:" destination="-1" eventType="valueChanged" id="5JT-Oe-7cj"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemGray6Color"/>
+                    <constraints>
+                        <constraint firstItem="PeH-ru-Apf" firstAttribute="centerX" secondItem="uTN-xW-ydQ" secondAttribute="centerX" id="77r-AJ-HVx"/>
+                        <constraint firstItem="Com-rO-I1l" firstAttribute="top" secondItem="uTN-xW-ydQ" secondAttribute="top" constant="23" id="Jtl-R6-Np7"/>
+                        <constraint firstItem="PeH-ru-Apf" firstAttribute="top" secondItem="Com-rO-I1l" secondAttribute="bottom" constant="30" id="lP7-Vl-3mm"/>
+                        <constraint firstAttribute="height" constant="150" id="v7B-cq-lWH"/>
+                        <constraint firstItem="Com-rO-I1l" firstAttribute="centerX" secondItem="uTN-xW-ydQ" secondAttribute="centerX" id="x6N-uB-wO7"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Сортировать:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hho-zT-UBC">
+                    <rect key="frame" x="143" y="60" width="128.5" height="23"/>
+                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPq-r2-c8q">
+                    <rect key="frame" x="137" y="284" width="140" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.5490196078431373" blue="1" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="140" id="R0l-Xs-mxe"/>
+                        <constraint firstAttribute="height" constant="40" id="VSm-Xl-qVW"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
+                    <state key="normal" title="Сохранить">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="15"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="saveAction" destination="-1" eventType="touchUpInside" id="y56-rh-zvU"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="hho-zT-UBC" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="61I-OV-j7R"/>
+                <constraint firstItem="uTN-xW-ydQ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="60" id="Re8-wR-iXA"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="uTN-xW-ydQ" secondAttribute="trailing" constant="20" id="TgL-9O-yuw"/>
+                <constraint firstItem="hho-zT-UBC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="UO0-OI-jsh"/>
+                <constraint firstItem="tPq-r2-c8q" firstAttribute="top" secondItem="uTN-xW-ydQ" secondAttribute="bottom" constant="30" id="dLV-5V-YWj"/>
+                <constraint firstItem="uTN-xW-ydQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="lHk-Y7-aKD"/>
+                <constraint firstItem="tPq-r2-c8q" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="sK7-Ji-EGE"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="48"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
