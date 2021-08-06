@@ -17,6 +17,11 @@ class SettingsViewController: UITableViewController {
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         title = "Настройки"
+        
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0/255,
+                                                                green: 140/255,
+                                                                blue: 255/255,
+                                                                alpha: 0.7)
         tableView.tableFooterView = UIView()
     }
 

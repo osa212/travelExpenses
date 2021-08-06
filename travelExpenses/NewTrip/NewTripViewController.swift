@@ -78,7 +78,7 @@ class NewTripViewController: UIViewController {
         countryTF._placeholder = "Страна"
         cityTF.placeholder = "Город"
         cityTF._placeholder = "Город"
-                
+        
         countryTF.snp.makeConstraints { maker in
             maker.top.equalTo(100)
             maker.left.equalTo(40)

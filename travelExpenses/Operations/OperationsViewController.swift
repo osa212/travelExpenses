@@ -131,6 +131,8 @@ class OperationsViewController: UITableViewController {
         }
 
         button.addTarget(self, action: #selector(addButton), for: UIControl.Event.touchUpInside)
+        
+        
     }
     // MARK: -  Get Balance
     private func getBalance() {
@@ -157,8 +159,10 @@ class OperationsViewController: UITableViewController {
         let newOperationVC = NewOperationViewController()
         navigationController?.pushViewController(newOperationVC, animated: true)
         newOperationVC.viewModel = viewModel.NewOperationViewModelNew(trip: viewModel.trip)
-
+    
     }
+    
+        
     // MARK: -  Edit methods
     private func swiping(indexPath: IndexPath,
                          segmentIndex: Int) -> [UIContextualAction] {

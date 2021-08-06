@@ -63,7 +63,7 @@ class Floating: UITextField {
         self.borderStyle = .none
         bottomLine.frame = CGRect(x: 0,
                                   y: self.frame.size.height,
-                                  width: self.frame.size.width - 50,
+                                  width: UIScreen.main.bounds.width - 80,
                                   height: 1)
         self.layer.addSublayer(bottomLine)
         }
