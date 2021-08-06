@@ -10,7 +10,7 @@ import UIKit
 class SettingsViewController: UITableViewController {
 
     var settings = ["Сортировка", "О приложении", "Telegram"]
-    var images = ["arrow.up.arrow.down", "info", "text.bubble"]
+    var images = ["arrow.up.arrow.down", "info.circle", "text.bubble"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

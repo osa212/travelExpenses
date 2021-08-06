@@ -55,12 +55,15 @@ class Floating: UITextField {
         self.addTarget(self, action: #selector(self.removeFloatingLabel), for: .editingDidEnd)
         
         let bottomLine = CALayer()
-        bottomLine.borderColor = UIColor(red: 181/255, green: 216/255, blue: 228/255, alpha: 1).cgColor
+        bottomLine.borderColor = UIColor(red: 181/255,
+                                         green: 216/255,
+                                         blue: 228/255,
+                                         alpha: 1).cgColor
         bottomLine.borderWidth = 1
         self.borderStyle = .none
         bottomLine.frame = CGRect(x: 0,
                                   y: self.frame.size.height,
-                                  width: self.frame.size.width,
+                                  width: self.frame.size.width - 50,
                                   height: 1)
         self.layer.addSublayer(bottomLine)
         }

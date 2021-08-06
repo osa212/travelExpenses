@@ -118,12 +118,14 @@ class OperationsViewController: UITableViewController {
         button.layer.borderWidth = 2
         button.translatesAutoresizingMaskIntoConstraints = false
 
+        guard let tabbarHeight = self.tabBarController?.tabBar.frame.size.height else { return }
+        
         if let window = UIApplication.shared.windows.first {
             window.addSubview(button)
             button.snp.makeConstraints { make in
                 make.width.height.equalTo(60)
-                make.bottom.equalTo(window.snp.bottom).inset(90)
-                make.right.equalTo(window.snp.right).inset(20)
+                make.bottom.equalTo(window.snp.bottom).offset(-tabbarHeight - 2)
+                make.right.equalTo(window.snp.centerX).offset(30)
             }
 
         }

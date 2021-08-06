@@ -53,6 +53,7 @@ class NewOperationViewController: UITableViewController {
         
         initialize()
         initializeEditing()
+        
     }
     
     
@@ -62,6 +63,7 @@ class NewOperationViewController: UITableViewController {
         title = "Расход"
         let width = UIScreen.main.bounds.size.width
         view.backgroundColor = .white
+        tableView.tableFooterView = UIView()
         view.addSubview(segment)
         segment.selectedSegmentIndex = 0
         segment.backgroundColor = UIColor(red: 181/255,
@@ -191,14 +193,64 @@ class NewOperationViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 1 : 40
+    }
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 1 {
+            let buttonsView = UIView(frame: CGRect(x: 0,
+                                                   y: 0,
+                                                   width: tableView.frame.width,
+                                                   height: 40))
+            
+            let saveButton = UIButton(type: .custom)
+            let cancelButton = UIButton(type: .custom)
+            buttonsView.addSubview(saveButton)
+            buttonsView.addSubview(cancelButton)
+            cancelButton.setTitle("Отмена", for: .normal)
+            cancelButton.backgroundColor = .gray
+            cancelButton.layer.cornerRadius = 15
+            cancelButton.addTarget(self,
+                                   action: #selector(cancelTapped),
+                                   for: UIControl.Event.touchUpInside)
+            
+            saveButton.setTitle("Сохранить", for: .normal)
+            saveButton.backgroundColor = appColor
+            saveButton.layer.cornerRadius = 15
+            saveButton.addTarget(self,
+                                 action: #selector(saveOperation),
+                                 for: UIControl.Event.touchUpInside)
+                    
+            saveButton.snp.makeConstraints { make in
+                make.top.equalTo(buttonsView.snp.top)
+                make.left.equalTo(buttonsView.snp.centerX).offset(15)
+                make.width.equalTo(130)
+            }
+            
+            cancelButton.snp.makeConstraints { make in
+                make.top.equalTo(buttonsView.snp.top)
+                make.right.equalTo(buttonsView.snp.centerX).offset(-15)
+                make.width.equalTo(130)
+            }
+            tableView.addSubview(buttonsView)
+            return buttonsView
+        } else {
+            return UIView()
+        }
+    
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch segment.selectedSegmentIndex {
-        case 0: return viewModel.numberOfRowsExpenses
-        default: return viewModel.numberOfRowsIncomes
+        if section == 0 {
+            switch segment.selectedSegmentIndex {
+            case 0: return viewModel.numberOfRowsExpenses
+            default: return viewModel.numberOfRowsIncomes
+            }
         }
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -226,42 +278,6 @@ class NewOperationViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 60
-    }
-    
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let buttonsView = UIView()
-        
-        let saveButton = UIButton(type: .custom)
-        let cancelButton = UIButton(type: .custom)
-        buttonsView.addSubview(saveButton)
-        buttonsView.addSubview(cancelButton)
-        cancelButton.setTitle("Отмена", for: .normal)
-        cancelButton.backgroundColor = .gray
-        cancelButton.layer.cornerRadius = 15
-        cancelButton.addTarget(self, action: #selector(cancelTapped), for: UIControl.Event.touchUpInside)
-        
-                
-        saveButton.setTitle("Сохранить", for: .normal)
-        saveButton.backgroundColor = appColor
-        saveButton.layer.cornerRadius = 15
-        saveButton.addTarget(self, action: #selector(saveOperation), for: UIControl.Event.touchUpInside)
-        
-        saveButton.snp.makeConstraints { make in
-            make.top.equalTo(buttonsView.snp.top).offset(20)
-            make.left.equalTo(buttonsView.snp.centerX).offset(15)
-            make.width.equalTo(130)
-        }
-        
-        cancelButton.snp.makeConstraints { make in
-            make.top.equalTo(buttonsView.snp.top).offset(20)
-            make.right.equalTo(buttonsView.snp.centerX).offset(-15)
-            make.width.equalTo(130)
-        }
-        
-        return buttonsView
-    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         

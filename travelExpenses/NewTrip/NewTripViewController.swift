@@ -78,20 +78,16 @@ class NewTripViewController: UIViewController {
         countryTF._placeholder = "Страна"
         cityTF.placeholder = "Город"
         cityTF._placeholder = "Город"
-        
-        let screenWidth = UIScreen.main.bounds.width
-        print(screenWidth)
+                
         countryTF.snp.makeConstraints { maker in
             maker.top.equalTo(100)
             maker.left.equalTo(40)
-            maker.width.equalTo(300)
             maker.height.equalTo(30)
         }
         
         cityTF.snp.makeConstraints { maker in
             maker.top.equalTo(countryTF.snp.bottom).offset(40)
             maker.left.equalTo(40)
-            maker.width.equalTo(300)
             maker.height.equalTo(30)
         }
     }
