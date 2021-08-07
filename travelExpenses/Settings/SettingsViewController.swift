@@ -9,8 +9,8 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
 
-    var settings = ["Сортировка", "О приложении", "Telegram"]
-    var images = ["arrow.up.arrow.down", "info.circle", "text.bubble"]
+    var settings = ["Сортировка", "О приложении"]
+    var images = ["arrow.up.arrow.down", "info.circle"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,10 +57,7 @@ class SettingsViewController: UITableViewController {
             self.navigationController?.pushViewController(descriptionVC, animated: true)
         }
         
-        if indexPath.row == 2 {
-            guard let url = URL(string: "https://t.me/\("travel_exp")") else { return }
-            UIApplication.shared.open(url)
-        }
+        
     }
 
 }

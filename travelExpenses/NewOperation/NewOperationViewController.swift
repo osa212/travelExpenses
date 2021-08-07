@@ -223,17 +223,18 @@ class NewOperationViewController: UITableViewController {
             saveButton.addTarget(self,
                                  action: #selector(saveOperation),
                                  for: UIControl.Event.touchUpInside)
-                    
+            
+            let widthOfScreen = UIScreen.main.bounds.width
             saveButton.snp.makeConstraints { make in
                 make.top.equalTo(buttonsView.snp.top)
                 make.left.equalTo(buttonsView.snp.centerX).offset(15)
-                make.width.equalTo(130)
+                make.width.equalTo(widthOfScreen / 2 - 30)
             }
             
             cancelButton.snp.makeConstraints { make in
                 make.top.equalTo(buttonsView.snp.top)
                 make.right.equalTo(buttonsView.snp.centerX).offset(-15)
-                make.width.equalTo(130)
+                make.width.equalTo(widthOfScreen / 2 - 30)
             }
             tableView.addSubview(buttonsView)
             return buttonsView
