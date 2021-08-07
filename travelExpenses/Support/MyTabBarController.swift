@@ -23,7 +23,7 @@ class MyTabBarController: UITabBarController, UITabBarControllerDelegate {
         if fromView != toView {
             UIView.transition(from: fromView,
                               to: toView,
-                              duration: 0.3,
+                              duration: 0.1,
                               options: [.transitionCrossDissolve],
                               completion: nil)
         }

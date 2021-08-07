@@ -83,12 +83,14 @@ class NewTripViewController: UIViewController {
             maker.top.equalTo(100)
             maker.left.equalTo(40)
             maker.height.equalTo(30)
+            maker.width.equalTo(UIScreen.main.bounds.width - 80)
         }
         
         cityTF.snp.makeConstraints { maker in
             maker.top.equalTo(countryTF.snp.bottom).offset(40)
             maker.left.equalTo(40)
             maker.height.equalTo(30)
+            maker.width.equalTo(UIScreen.main.bounds.width - 80)
         }
     }
     // MARK: -  Saving Data
@@ -176,7 +178,7 @@ extension NewTripViewController {
             maker.top.equalTo(cityTF.snp.bottom).offset(40)
             maker.left.equalTo(40)
             maker.height.equalTo(30)
-            maker.width.equalTo(300)
+            maker.width.equalTo(UIScreen.main.bounds.width - 80)
         }
         dateTF.datePicker(target: self,
                           doneAction: #selector(dateDoneAction),

@@ -24,6 +24,7 @@ class TripsViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
     
     deinit {
@@ -94,20 +95,42 @@ class TripsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         70
     }
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        let mainImage = UIImageView()
-        mainImage.image = UIImage(named: "CityTrafficSocialGraphic")
-        headerView.addSubview(mainImage)
-        mainImage.snp.makeConstraints { make in
-            make.edges.equalTo(headerView)
-        }
-        return headerView
-    }
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        250
+//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let headerView = UIView()
+//        let mainImage = UIImageView()
+//        mainImage.image = UIImage(named: "CityTrafficSocialGraphic")
+//        headerView.addSubview(mainImage)
+//        mainImage.snp.makeConstraints { make in
+//            make.edges.equalTo(headerView)
+//        }
+//        return headerView
+//    }
+//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        250
+//    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        viewModel.trips.isEmpty ? UIScreen.main.bounds.height - 100 : 0
+        
     }
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if viewModel.trips.isEmpty {
+            let footerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100))
+            let beginImage = UIImageView()
+            beginImage.image = UIImage(named: "beginImage")
+            footerView.addSubview(beginImage)
+            beginImage.contentMode = .scaleAspectFit
+            beginImage.snp.makeConstraints { make in
+                make.edges.equalTo(footerView)
+                
+            }
+            return footerView
+        } else {
+            return UIView()
+        }
+        
+    }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.trips.count
     }
