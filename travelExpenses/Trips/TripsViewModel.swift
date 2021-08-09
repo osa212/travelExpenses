@@ -36,11 +36,36 @@ class TripsViewModel: TripsViewModelProtocol {
         for country in DataManager.shared.countries {
             if country.name == trips[index].country {
                 let url = "\(NetworkManager.shared.flagUrl)\(country.code)/shiny/64.png"
+                guard let urlForCach = URL(string: url) else { return Data() }
+                
+                if let cachedImage = getCachedImage(from: urlForCach) {
+                    print(cachedImage.description)
+                    return cachedImage
+                }
+                print("no cach")
                 guard let data = NetworkManager.shared.fetchFlag(url: url) else { return Data()}
+                self.saveDataToCash(data: data, response: URLResponse())
                 return data
             }
         }
         return Data()
+    }
+    
+    private func saveDataToCash(data: Data, response: URLResponse) {
+            let cachedResponse = CachedURLResponse(response: response, data: data)
+            
+            guard let url = response.url else {return}
+            let request = URLRequest(url: url)
+            URLCache.shared.storeCachedResponse(cachedResponse,
+                                                for: request)
+    }
+    
+    private func getCachedImage(from url: URL) -> Data? {
+        let request = URLRequest(url: url)
+        if let cachedResponse = URLCache.shared.cachedResponse(for: request) {
+            return Data(cachedResponse.data)
+        }
+        return nil
     }
     
     func newTripEditingViewModel(trip: Trip) -> NewTripViewModelProtocol {

@@ -157,6 +157,7 @@ class NewOperationViewController: UITableViewController {
     
     private func initializeEditing() {
         if let editingIncome = viewModel.income {
+            title = "Поступление"
             userAmount = "\(editingIncome.amount)"
             let date = viewModel.dateFormatToString(dateFormat: "dd/MM/yyyy",
                                                     date: editingIncome.date)
@@ -169,6 +170,7 @@ class NewOperationViewController: UITableViewController {
             segment.selectedSegmentIndex = 1
             segment.setEnabled(false, forSegmentAt: 0)
         } else if let editingExpense = viewModel.expense {
+            title = "Расход"
             userAmount = "\(editingExpense.amount)"
             let date = viewModel.dateFormatToString(dateFormat: "dd/MM/yyyy",
                                                     date: editingExpense.date)
@@ -315,6 +317,14 @@ class NewOperationViewController: UITableViewController {
             amountView.isDismissed = { [unowned self] in
                 if let amount = userAmount {
                     viewModel.array[1] = amount
+                    if userCurrency != "Выбрать валюту" && segment.selectedSegmentIndex == 0 {
+                        viewModel.array[2] = "Выбрать валюту"
+                    }
+                    if convertedAmount != "Сумма в рублях" {
+                        viewModel.array[4] = "Сумма в рублях"
+                        convertedAmount = "Сумма в рублях"
+                    }
+                    
                 }
                 tableView.reloadData()
             }
@@ -344,13 +354,14 @@ class NewOperationViewController: UITableViewController {
                 currencyVC.isDismissed = { [unowned self] in
                     if let currency = userCurrency {
                         viewModel.array[2] = currency
-                        if userCurrency == "RUB" {
-                            viewModel.array[4] = viewModel.array[1]
+                        
+                        if currency == "RUB" {
+                            viewModel.array[4] = userAmount ?? "Сумма в рублях"
+                        } else if let convertedAmount = convertedAmount {
+                            viewModel.array[4] = convertedAmount
                         }
                     }
-                    if let convertedAmount = convertedAmount {
-                        viewModel.array[4] = convertedAmount
-                    }
+                    
             
                     tableView.reloadData()
                 }
@@ -375,11 +386,12 @@ class NewOperationViewController: UITableViewController {
             convertedView.transitioningDelegate = self
             
             self.present(convertedView, animated: true, completion: nil)
-            
-            if let convertedAmount = convertedAmount {
-                convertedView.amountTextField.text = convertedAmount
-            }
             convertedView.delegate = self
+
+            if let convertedAmount = convertedAmount {
+                guard let doubleAmount = Double(convertedAmount) else { return }
+                convertedView.amountTextField.text = String(doubleAmount)
+            }
             
             convertedView.isDismissed = { [unowned self] in
                 if let convertedAmount = convertedAmount {
