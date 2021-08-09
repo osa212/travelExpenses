@@ -11,6 +11,16 @@ class TripsViewController: UITableViewController {
 
     var viewModel: TripsViewModelProtocol!
     
+    private var seacrhBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
+    private var isFiltering: Bool {
+        return searchController.isActive && !seacrhBarIsEmpty
+    }
+    
+    private let searchController = UISearchController(searchResultsController: nil)
+    
     private let cellID = "cell"
     
     override func viewDidLoad() {
@@ -21,6 +31,8 @@ class TripsViewController: UITableViewController {
         
         viewModel = TripsViewModel()
         initialize()
+        setupSearch()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -121,7 +133,7 @@ class TripsViewController: UITableViewController {
         
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.trips.count
+        isFiltering ? viewModel.filteredTrips.value.count : viewModel.trips.count
     }
 
     
@@ -131,13 +143,22 @@ class TripsViewController: UITableViewController {
         cell.layer.cornerRadius = 20
         
         var content = cell.defaultContentConfiguration()
-        let trip = viewModel.trips[indexPath.row]
+        
+        var trip = Trip()
+        if isFiltering {
+            trip = viewModel.filteredTrips.value[indexPath.row]
+        } else {
+            trip = viewModel.trips[indexPath.row]
+        }
+        
         let dateString = viewModel.dateFormatToString(dateFormat: "dd/MM/yyyy",
                                                       date: trip.date)
         
         content.text = trip.city
         content.secondaryText = String(dateString)
         content.image = UIImage(data: viewModel.getImage(index: indexPath.row))
+        
+        
         content.textProperties.font = .boldSystemFont(ofSize: 20)
         content.secondaryTextProperties.font = .italicSystemFont(ofSize: 14)
         content.textProperties.color = .darkGray
@@ -149,10 +170,15 @@ class TripsViewController: UITableViewController {
     
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let expensesVC = OperationsViewController()
+        let operationsVC = OperationsViewController()
 
-        expensesVC.viewModel = viewModel.expensesViewModel(indexPath: indexPath)
-        navigationController?.pushViewController(expensesVC, animated: true)
+        if isFiltering {
+            operationsVC.viewModel = viewModel.expensesViewModelFilter(indexPath: indexPath)
+        } else {
+            operationsVC.viewModel = viewModel.expensesViewModel(indexPath: indexPath)
+        }
+        
+        navigationController?.pushViewController(operationsVC, animated: true)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -187,5 +213,30 @@ class TripsViewController: UITableViewController {
         editAction.backgroundColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
         
         return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+    }
+}
+
+// MARK: -  SearchResult
+extension TripsViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContent(searchText: searchController.searchBar.text!)
+}
+
+    private func filterContent(searchText: String) {
+
+        viewModel.filteredTrips.value = viewModel.trips.filter({ trip in
+            return trip.city.lowercased().contains(searchText.lowercased())
+        })
+        viewModel.filteredTrips.bind { [unowned self] _ in
+            tableView.reloadData()
+        }
+}
+
+    private func setupSearch() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Поиск"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
 }

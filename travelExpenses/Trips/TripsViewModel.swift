@@ -10,6 +10,7 @@ import RealmSwift
 
 protocol TripsViewModelProtocol {
     var trips: Results<Trip> { get }
+    var filteredTrips: Box<[Trip]> { get }
     
     func dateFormatToString(dateFormat: String, date: Date) -> String
     func getImage(index: Int) -> Data
@@ -18,6 +19,7 @@ protocol TripsViewModelProtocol {
     func newTripEditingViewModel(trip: Trip) -> NewTripViewModelProtocol
     func newTripViewModel() -> NewTripViewModelProtocol
     func expensesViewModel(indexPath: IndexPath) -> OperationsViewModelProtocol
+    func expensesViewModelFilter(indexPath: IndexPath) -> OperationsViewModelProtocol
 }
 
 class TripsViewModel: TripsViewModelProtocol {
@@ -26,6 +28,8 @@ class TripsViewModel: TripsViewModelProtocol {
         StorageManager.shared.realm.objects(Trip.self)
     }
     
+    var filteredTrips: Box<[Trip]> = Box([])
+
     func dateFormatToString(dateFormat: String, date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
@@ -39,10 +43,8 @@ class TripsViewModel: TripsViewModelProtocol {
                 guard let urlForCach = URL(string: url) else { return Data() }
                 
                 if let cachedImage = getCachedImage(from: urlForCach) {
-                    print(cachedImage.description)
                     return cachedImage
                 }
-                print("no cach")
                 guard let data = NetworkManager.shared.fetchFlag(url: url) else { return Data()}
                 self.saveDataToCash(data: data, response: URLResponse())
                 return data
@@ -78,6 +80,11 @@ class TripsViewModel: TripsViewModelProtocol {
     
     func expensesViewModel(indexPath: IndexPath) -> OperationsViewModelProtocol {
         let trip = trips[indexPath.row]
+        return OperationsViewModel(trip: trip)
+    }
+    
+    func expensesViewModelFilter(indexPath: IndexPath) -> OperationsViewModelProtocol {
+        let trip = filteredTrips.value[indexPath.row]
         return OperationsViewModel(trip: trip)
     }
     

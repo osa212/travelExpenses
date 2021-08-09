@@ -37,7 +37,7 @@ class AmountView: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction))
         view.addGestureRecognizer(panGesture)
         
-        textField.placeholder = DataManager.shared.operationNames[1]
+        textField.placeholder = "Введите сумму"
         textField.inputAccessoryView = toolBar()
         textField.resignFirstResponder()
         

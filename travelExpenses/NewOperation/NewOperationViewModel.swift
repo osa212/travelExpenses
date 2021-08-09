@@ -14,9 +14,9 @@ protocol NewOperationViewModelProtocol {
         
     var numberOfRowsExpenses: Int { get }
     var numberOfRowsIncomes: Int { get }
-    
-    var array: [String] { get set }
-    
+    var namesOfExpenses: [String] { get }
+    var namesOfIncomes: [String] { get }
+        
     init(income: Income)
     init(expense: Expense)
     init(trip: Trip)
@@ -43,6 +43,9 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
     var income: Income?
     var expense: Expense?
     
+    var namesOfExpenses = ["Дата", "Сумма", "Валюта", "Категория", "Сумма в рублях", "Фото чека", "Способ оплаты"]
+    var namesOfIncomes = ["Дата", "Сумма в рублях", "Категория"]
+    
     var numberOfRowsExpenses: Int {
         DataManager.shared.expensesImages.count
     }
@@ -50,9 +53,6 @@ class NewOperationViewModel: NewOperationViewModelProtocol {
     var numberOfRowsIncomes: Int {
         DataManager.shared.incomesImages.count
     }
-    
-    var array = ["Выбрать дату", "Ввести сумму", "Выбрать валюту", "Выбрать категорию", "Сумма в рублях", "Добавить фото чека", "Способ оплаты"]
-    
     
     required init(trip: Trip) {
         self.trip = trip

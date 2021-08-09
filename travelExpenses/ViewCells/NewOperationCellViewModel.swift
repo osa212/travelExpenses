@@ -9,7 +9,6 @@ import Foundation
 
 protocol NewOperationCellViewModelProtocol {
     var image: String { get }
-
     init(indexPath: IndexPath)
     
 }
@@ -19,6 +18,7 @@ class NewOperationCellViewModel: NewOperationCellViewModelProtocol {
     
     let indexPath: IndexPath
     
+    
     required init(indexPath: IndexPath) {
         self.indexPath = indexPath
     }
@@ -26,8 +26,5 @@ class NewOperationCellViewModel: NewOperationCellViewModelProtocol {
     var image: String {
         DataManager.shared.expensesImages[indexPath.row]
     }
-    
-    
-  
     
 }

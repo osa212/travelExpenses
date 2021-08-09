@@ -92,50 +92,57 @@ class NewOperationViewController: UITableViewController {
     
     // MARK: -  Save Operation
     @objc private func saveOperation() {
-        if viewModel.array[0].isEmpty || viewModel.array[0] == DataManager.shared.operationNames[0] {
+        guard let userDate = userDate else {
             alert(title: "❌", message: "Пожалуйста, выберите дату")
             return
         }
-        if viewModel.array[1].isEmpty || viewModel.array[1] == DataManager.shared.operationNames[1] {
-            alert(title: "❌", message: "Пожалуйста, введите сумму")
-            return
-        }
-        if viewModel.array[2].isEmpty || viewModel.array[2] == DataManager.shared.operationNames[2] {
-            alert(title: "❌", message: "Пожалуйста, выберите валюту")
-            return
-        }
-        if viewModel.array[3].isEmpty || viewModel.array[3] == DataManager.shared.operationNames[3] {
-            alert(title: "❌", message: "Пожалуйста, выберите категорию")
-            return
-        }
+        
         
         switch title {
         case "Расход":
+            guard let userAmount = userAmount else {
+                alert(title: "❌", message: "Пожалуйста, введите сумму")
+                return
+            }
+            guard let userCurrency = userCurrency else {
+                alert(title: "❌", message: "Пожалуйста, выберите валюту")
+                return
+            }
+            guard let choosenCategory = choosenCategory else {
+                alert(title: "❌", message: "Пожалуйста, выберите категорию")
+                return
+            }
             
-            if viewModel.array[4].isEmpty || viewModel.array[4] == DataManager.shared.operationNames[4] {
+            guard let convertedAmount = convertedAmount else {
                 alert(title: "❌", message: "Пожалуйста, введите сумму в рублях")
                 return
             }
+            
             if let image = imageView.image {
                 fileName = savePng(image: image)
-                guard let fileName = fileName else { return }
-                viewModel.array[5] = fileName
             }
             
-            viewModel.saveExpense(amount: viewModel.array[1],
-                                  currency: viewModel.array[2],
-                                  category: viewModel.array[3],
-                                  date: viewModel.array[0],
-                                  convertedAmount: viewModel.array[4],
-                                  receipt: viewModel.array[5],
-                                  method: viewModel.array[6],
+            viewModel.saveExpense(amount: userAmount,
+                                  currency: userCurrency,
+                                  category: choosenCategory,
+                                  date: userDate,
+                                  convertedAmount: convertedAmount,
+                                  receipt: fileName ?? "",
+                                  method: paymentMethod ?? "",
                                   note: "")
         default:
-            
-            viewModel.saveIncome(amount: viewModel.array[1],
-                                 currency: viewModel.array[2],
-                                 category: viewModel.array[3],
-                                 date: viewModel.array[0])
+            guard let convertedAmount = convertedAmount else {
+                alert(title: "❌", message: "Пожалуйста, введите сумму в рублях")
+                return
+            }
+            guard let choosenCategory = choosenCategory else {
+                alert(title: "❌", message: "Пожалуйста, выберите категорию")
+                return
+            }
+            viewModel.saveIncome(amount: convertedAmount,
+                                 currency: "RUB",
+                                 category: choosenCategory,
+                                 date: userDate)
         }
         
         
@@ -158,15 +165,12 @@ class NewOperationViewController: UITableViewController {
     private func initializeEditing() {
         if let editingIncome = viewModel.income {
             title = "Поступление"
-            userAmount = "\(editingIncome.amount)"
+            convertedAmount = "\(editingIncome.amount)"
             let date = viewModel.dateFormatToString(dateFormat: "dd/MM/yyyy",
                                                     date: editingIncome.date)
             userDate = "\(date)"
-            
-            viewModel.array[0] = "\(date)"
-            viewModel.array[1] = "\(editingIncome.amount)"
-            viewModel.array[2] = "\(editingIncome.currency)"
-            viewModel.array[3] = "\(editingIncome.category)"
+            userCurrency = editingIncome.currency
+            choosenCategory = editingIncome.category
             segment.selectedSegmentIndex = 1
             segment.setEnabled(false, forSegmentAt: 0)
         } else if let editingExpense = viewModel.expense {
@@ -175,16 +179,10 @@ class NewOperationViewController: UITableViewController {
             let date = viewModel.dateFormatToString(dateFormat: "dd/MM/yyyy",
                                                     date: editingExpense.date)
             userDate = "\(date)"
-            
             convertedAmount = "\(editingExpense.convertedAmount)"
-            
-            viewModel.array[0] = "\(date)"
-            viewModel.array[1] = "\(editingExpense.amount)"
-            viewModel.array[2] = "\(editingExpense.currency)"
-            viewModel.array[3] = "\(editingExpense.category)"
-            viewModel.array[4] = "\(editingExpense.convertedAmount)"
-            viewModel.array[5] = "Фото чека"
-            viewModel.array[6] = "\(editingExpense.paymentMethod)"
+            userCurrency = editingExpense.currency
+            choosenCategory = editingExpense.category
+            paymentMethod = editingExpense.paymentMethod
             segment.selectedSegmentIndex = 0
             segment.setEnabled(false, forSegmentAt: 1)
 
@@ -263,9 +261,20 @@ class NewOperationViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NewOperationViewCell
 
+        let changingData = [userDate, userAmount, userCurrency, choosenCategory, convertedAmount, "", paymentMethod]
+        let changingIncome = [userDate, convertedAmount, choosenCategory]
+        
         cell.viewModel = viewModel.cellViewModel(indexPath: indexPath)
 
-        cell.cellTextLabel.text = viewModel.array[indexPath.row]
+        
+        if segment.selectedSegmentIndex == 1 {
+            cell.cellNameLabel.text = viewModel.namesOfIncomes[indexPath.row]
+            cell.cellImageView.image = UIImage(systemName: DataManager.shared.incomesImages[indexPath.row])
+            cell.cellTextLabel.text = changingIncome[indexPath.row]
+        } else {
+            cell.cellNameLabel.text = viewModel.namesOfExpenses[indexPath.row]
+            cell.cellTextLabel.text = changingData[indexPath.row]
+        }
         
         if indexPath.row == 5 {
             cell.addSubview(imageView)
@@ -296,87 +305,85 @@ class NewOperationViewController: UITableViewController {
                 dateView.textField.text = date
             }
             dateView.delegate = self
-            dateView.isDismissed = { [unowned self] in
-                if let date = userDate {
-                    viewModel.array[0] = date
-                }
+            dateView.isDismissed = {
                 tableView.reloadData()
             }
         case 1:
-            let amountView = AmountView()
-            amountView.modalPresentationStyle = .custom
-            amountView.transitioningDelegate = self
-            
-            self.present(amountView, animated: true, completion: nil)
-            
-            if let amount = userAmount {
-                amountView.textField.text = amount
-            }
-            amountView.delegate = self
-            
-            amountView.isDismissed = { [unowned self] in
-                if let amount = userAmount {
-                    viewModel.array[1] = amount
-                    if userCurrency != "Выбрать валюту" && segment.selectedSegmentIndex == 0 {
-                        viewModel.array[2] = "Выбрать валюту"
-                    }
-                    if convertedAmount != "Сумма в рублях" {
-                        viewModel.array[4] = "Сумма в рублях"
-                        convertedAmount = "Сумма в рублях"
-                    }
-                    
-                }
-                tableView.reloadData()
-            }
-            
-        case 2:
-            let currencyVC = CurrencyTableViewController()
-            
-            guard let date = userDate else {
-                alert(title: "❌", message: "Необходимо ввести дату расхода")
-                tableView.deselectRow(at: indexPath, animated: true)
-                return
-            }
-            let dateToFetch = viewModel.dateStringToString(date: date)
-
-            currencyVC.viewModel = viewModel.currencyViewModel(date: dateToFetch)
-            currencyVC.delegate = self
-            
-            if segment.selectedSegmentIndex == 1 {
-                userCurrency = "RUB"
-                viewModel.array[2] = "RUB"
-            } else {
-                navigationController?.present(UINavigationController(
-                                                rootViewController: currencyVC),
-                                              animated: true,
-                                              completion: nil)
+            if segment.selectedSegmentIndex == 0 {
+                let amountView = AmountView()
+                amountView.modalPresentationStyle = .custom
+                amountView.transitioningDelegate = self
                 
-                currencyVC.isDismissed = { [unowned self] in
-                    if let currency = userCurrency {
-                        viewModel.array[2] = currency
-                        
-                        if currency == "RUB" {
-                            viewModel.array[4] = userAmount ?? "Сумма в рублях"
-                        } else if let convertedAmount = convertedAmount {
-                            viewModel.array[4] = convertedAmount
-                        }
-                    }
-                    
-            
+                self.present(amountView, animated: true, completion: nil)
+                
+                if let amount = userAmount {
+                    amountView.textField.text = amount
+                }
+                amountView.delegate = self
+                
+                amountView.isDismissed = {
                     tableView.reloadData()
                 }
+            } else {
+                let convertedView = ConvertedAmountView()
+                convertedView.modalPresentationStyle = .custom
+                convertedView.transitioningDelegate = self
                 
+                self.present(convertedView, animated: true, completion: nil)
+                convertedView.delegate = self
+
+                if let convertedAmount = convertedAmount {
+                    guard let doubleAmount = Double(convertedAmount) else { return }
+                    convertedView.amountTextField.text = String(doubleAmount)
+                }
+                
+                convertedView.isDismissed = {
+                    tableView.reloadData()
+                }
             }
-            tableView.reloadData()
+            
+            
+        case 2:
+            
+            if segment.selectedSegmentIndex == 1 {
+                let categoryVC = CategoryTableViewController()
+                categoryVC.delegate = self
+                self.present(categoryVC, animated: true, completion: nil)
+                categoryVC.isDismissed = {
+                    tableView.reloadData()
+                }
+            } else {
+                let currencyVC = CurrencyTableViewController()
+                
+                guard let date = userDate else {
+                    alert(title: "❌", message: "Необходимо ввести дату расхода")
+                    tableView.deselectRow(at: indexPath, animated: true)
+                    return
+                }
+                let dateToFetch = viewModel.dateStringToString(date: date)
+
+                currencyVC.viewModel = viewModel.currencyViewModel(date: dateToFetch)
+                currencyVC.delegate = self
+                
+                navigationController?.present(UINavigationController(
+                                                    rootViewController: currencyVC),
+                                                  animated: true,
+                                                  completion: nil)
+                    
+                currencyVC.isDismissed = { [unowned self] in
+                    if userCurrency == "RUB" {
+                        convertedAmount = userAmount ?? ""
+                    }
+                    tableView.reloadData()
+                }
+            }
+            
             
         case 3:
             let categoryVC = CategoryTableViewController()
             categoryVC.delegate = self
             self.present(categoryVC, animated: true, completion: nil)
-            categoryVC.isDismissed = { [unowned self] in
-                if let category = choosenCategory {
-                    viewModel.array[3] = category
-                }
+            categoryVC.isDismissed = {
                 tableView.reloadData()
             }
             
@@ -393,10 +400,7 @@ class NewOperationViewController: UITableViewController {
                 convertedView.amountTextField.text = String(doubleAmount)
             }
             
-            convertedView.isDismissed = { [unowned self] in
-                if let convertedAmount = convertedAmount {
-                    viewModel.array[4] = convertedAmount
-                }
+            convertedView.isDismissed = {
                 tableView.reloadData()
             }
             
@@ -408,10 +412,7 @@ class NewOperationViewController: UITableViewController {
             methodView.transitioningDelegate = self
             methodView.delegate = self
             self.present(methodView, animated: true, completion: nil)
-            methodView.isDismissed = { [unowned self] in
-            if let method = paymentMethod {
-                    viewModel.array[6] = method
-                }
+            methodView.isDismissed = {
                 tableView.reloadData()
             }
             
@@ -420,9 +421,6 @@ class NewOperationViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
     }
-    
-    
-
     
 
 }

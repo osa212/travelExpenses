@@ -45,7 +45,7 @@ class DateView: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction))
         view.addGestureRecognizer(panGesture)
         
-        textField.placeholder = DataManager.shared.operationNames[0]
+        textField.placeholder = "Выберите дату"
         textField.resignFirstResponder()
         textField.addBottomLine()
     }

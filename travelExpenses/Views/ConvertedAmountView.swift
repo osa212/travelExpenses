@@ -37,7 +37,7 @@ class ConvertedAmountView: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction))
         view.addGestureRecognizer(panGesture)
         
-        amountTextField.placeholder = DataManager.shared.operationNames[4]
+        amountTextField.placeholder = "Введите сумму в рублях"
         amountTextField.inputAccessoryView = toolBar()
         amountTextField.resignFirstResponder()
         amountTextField.addBottomLine()
