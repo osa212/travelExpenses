@@ -12,7 +12,7 @@ class PaymentMethodViewController: UITableViewController {
     var pointOrigin: CGPoint?
     var delegate: UserInputDelegate!
     var isDismissed: (() -> Void)?
-    let methods = ["Оплачено наличными", "Оплачено картой"]
+    let methods = ["Наличными", "Картой"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

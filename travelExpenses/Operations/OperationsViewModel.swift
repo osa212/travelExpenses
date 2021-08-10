@@ -60,19 +60,19 @@ class OperationsViewModel: OperationsViewModelProtocol {
         let incomeAmounts: [Double] = incomes.map { return $0.amount }
         let expenseAmounts: [Double] = expenses.map { return $0.convertedAmount }
         let balance = incomeAmounts.reduce(0, +) - expenseAmounts.reduce(0, +)
-        return "\(balance.formatWithSeparator) руб."
+        return "\(balance.formatWithSeparator)"
     }
     
     var expenseLabelText: String {
         let expenseAmounts: [Double] = expenses.map { return $0.convertedAmount }
         let sumExpenses = expenseAmounts.reduce(0, +)
-        return "\(sumExpenses.formatWithSeparator) руб."
+        return "\(sumExpenses.formatWithSeparator)"
     }
     
     var incomeLabelText: String {
         let incomeAmounts: [Double] = incomes.map { return $0.amount }
         let sumIncomes = incomeAmounts.reduce(0, +)
-        return "\(sumIncomes.formatWithSeparator) руб."
+        return "\(sumIncomes.formatWithSeparator)"
     }
     
     func dateFormatToString(dateFormat: String, date: Date) -> String {
@@ -124,7 +124,7 @@ class OperationsViewModel: OperationsViewModelProtocol {
     func exportCSV() -> URL? {
         let fileName = "\(trip.city).csv"
         let path = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
-        var csvHead = "№,Date,Category,Incomes,Expenses\n"
+        var csvHead = "№,Дата,Категория,Получено,Потрачено\n"
         var number = 0
         
         for income in incomes {
@@ -146,7 +146,7 @@ class OperationsViewModel: OperationsViewModelProtocol {
         let balance = String(incomeAmounts.reduce(0, +) - expenseAmounts.reduce(0, +))
         
         csvHead.append(" , , , \(sumIncomes), \(sumExpenses)\n")
-        csvHead.append(" , , , Balance, \(balance)\n")
+        csvHead.append(" , , , Баланс, \(balance)\n")
         
         
         do {
